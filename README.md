@@ -70,7 +70,7 @@ PayPal Integration
 ## ScreenShots
 
 ## Splash screen
-<p align="center"> <img src="screen_shots/splashscreen.png" width="40%" /> </p>
+<p align="center"> <img src="screen_shots/splashscreen.png" width="20%" /> </p>
 
 ## Authentication
 <p align="center"> <img src="screen_shots/login.png" width="30%" /> <img src="screen_shots/register.png" width="30%" /> </p>
