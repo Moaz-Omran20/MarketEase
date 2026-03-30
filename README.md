@@ -70,14 +70,18 @@ PayPal Integration
 ## ScreenShots
 
 ## Splash screen
-<img src="screen_shots/splashscreen.png" width="613" alt="">
+<p align="center"> <img src="screen_shots/splashscreen.png" width="40%" /> </p>
 
 ## Authentication
 <p align="center"> <img src="screen_shots/login.png" width="30%" /> <img src="screen_shots/register.png" width="30%" /> </p>
 
+## Onboarding
+<p align="center"> <img src="screen_shots/onboarding1.png" width="40%" /> <img src="screen_shots/onboarding2.png" width="40%" /> <img src="screen_shots/onboarding3.png" width="40%" /> </p>
+
 
 ## Home
-<p align="center"> <img src="screen_shots/home.png" width="40%" /> </p>
+<p align="center"> <img src="screen_shots/home.png" width="1080" /> </p>
+
 ## products
 
 <p align="center"> <img src="screen_shots/products.png" width="30%" /> <img src="screen_shots/product_details1.png" width="30%" /> <img src="screen_shots/product_details2.png" width="30%" /> </p>
@@ -85,8 +89,10 @@ PayPal Integration
 
 ## Brands
 <p align="center"> <img src="screen_shots/brands.png" width="40%" /> </p>
+
 ## wishList
 <p align="center"> <img src="screen_shots/wishlist.png" width="40%" /> </p>
+
 ## Cart
 
 <p align="center"> <img src="screen_shots/cart.png" width="40%" /> </p>
