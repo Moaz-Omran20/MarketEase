@@ -73,35 +73,24 @@ PayPal Integration
 <img src="screen_shots/splashscreen.png" width="613" alt="">
 
 ## Authentication
-<img src="screen_shots/login.png" alt="">
-<img src="screen_shots/register.png" width="613" alt="">
+<p align="center"> <img src="screen_shots/login.png" width="30%" /> <img src="screen_shots/register.png" width="30%" /> </p>
 
 
 ## Home
-<img src="screen_shots/home.png" width="613" alt="">
-
+<p align="center"> <img src="screen_shots/home.png" width="40%" /> </p>
 ## products
 
-<img src="screen_shots/products.png" alt="">
-<img src="screen_shots/product_details1.png" width="613" alt="">
-<img src="screen_shots/product_details2.png" width="613" alt="">
+<p align="center"> <img src="screen_shots/products.png" width="30%" /> <img src="screen_shots/product_details1.png" width="30%" /> <img src="screen_shots/product_details2.png" width="30%" /> </p>
 
 
 ## Brands
-<img src="screen_shots/brands.png" width="613" alt="">
-
+<p align="center"> <img src="screen_shots/brands.png" width="40%" /> </p>
 ## wishList
-<img src="screen_shots/wishlist.png" width="613" alt="">
-
+<p align="center"> <img src="screen_shots/wishlist.png" width="40%" /> </p>
 ## Cart
 
-<img src="screen_shots/cart.png" width="613" alt="">
-
+<p align="center"> <img src="screen_shots/cart.png" width="40%" /> </p>
 
 ## payment
 
-<img src="screen_shots/payment_method.png" width="613" alt="">
-<img src="screen_shots/paypal.png" width="613" alt="">
-<img src="screen_shots/stripe.png" width="613" alt="">
-<img src="screen_shots/payment_success.png" width="613" alt="">
-
+<p align="center"> <img src="screen_shots/payment_method.png" width="23%" /> <img src="screen_shots/paypal.png" width="23%" /> <img src="screen_shots/stripe.png" width="23%" /> <img src="screen_shots/payment_success.png" width="23%" /> </p>
