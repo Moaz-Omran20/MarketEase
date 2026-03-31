@@ -116,7 +116,13 @@ class _HomeViewState extends State<HomeView> {
                 );
               } else {
                 return const SliverToBoxAdapter(
-                  child: Center(child: ProductLoading()),
+                  child: Center(
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: ProductLoading(),
+                    ),
+                  ),
                 );
               }
             },
