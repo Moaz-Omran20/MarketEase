@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:market_ease/core/services/cache_helper.dart';
 
 import '../../../../core/routes/app_routes.dart';
+import '../../../../core/utils/app_constants.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -58,9 +60,9 @@ class ProfilePage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Samuel Bishop',
-                      style: TextStyle(
+                    Text(
+                      CacheHelper().getData(key: AppConstants.userName),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
@@ -68,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'example@gmail.com',
+                      CacheHelper().getData(key: AppConstants.userEmail),
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.45),
                         fontSize: 13,

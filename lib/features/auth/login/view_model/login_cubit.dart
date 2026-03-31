@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:market_ease/core/data_source/remote/api_config.dart';
 import 'package:market_ease/core/data_source/remote/api_service.dart';
+import 'package:market_ease/core/services/cache_helper.dart';
 import 'package:market_ease/core/services/secure_storage.dart';
 import 'package:market_ease/core/utils/app_constants.dart';
 import 'package:market_ease/features/auth/login/models/login_model.dart';
@@ -14,6 +15,7 @@ part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final ApiService apiService;
+
   LoginCubit(this.apiService) : super(LoginInitial());
 
   Future<void> login({required String email, required String password}) async {
@@ -27,6 +29,18 @@ class LoginCubit extends Cubit<LoginState> {
       // response.data is the actual JSON map returned by the API
       final loginModel = LoginModel.fromJson(response.data);
 
+      await CacheHelper().saveData(
+        key: AppConstants.userName,
+        value: loginModel.user!.name,
+      );
+      await CacheHelper().saveData(
+        key: AppConstants.userEmail,
+        value: loginModel.user!.email,
+      );
+      await CacheHelper().saveData(
+        key: AppConstants.userRole,
+        value: loginModel.user!.role,
+      );
       if (loginModel.token != null) {
         final decodedToken = JwtDecoder.decode(loginModel.token!);
 
@@ -42,7 +56,9 @@ class LoginCubit extends Cubit<LoginState> {
 
         emit(LoginSuccess());
       } else {
-        emit(LoginFailure(errorMessage: "Unexpected response: Token is missing"));
+        emit(
+          LoginFailure(errorMessage: "Unexpected response: Token is missing"),
+        );
       }
     } catch (e) {
       if (e is DioException) {
