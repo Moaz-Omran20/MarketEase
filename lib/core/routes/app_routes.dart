@@ -2,11 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market_ease/core/shared_models/filter_model.dart';
 import 'package:market_ease/core/shared_models/product_model.dart';
+import 'package:market_ease/features/about/view/about_view.dart';
 import 'package:market_ease/features/auth/login/view/login_view.dart';
 import 'package:market_ease/features/auth/signup/view/signup_view.dart';
 import 'package:market_ease/features/checkout/presentation/view/widgets/thank_you_view.dart';
 import 'package:market_ease/features/main_screen.dart';
 import 'package:market_ease/features/product_details/presentation/view/product_details_view.dart';
+import 'package:market_ease/features/profile/presentaition/view/profile_view.dart';
 import 'package:market_ease/features/wishlist/data/wishlist_implementation.dart';
 import 'package:market_ease/features/wishlist/presentation/view_model/wishlist_cubit.dart';
 
@@ -26,6 +28,8 @@ abstract class AppRoutes {
   static const String kAllProductsView = '/allProductsView';
   static const String kProductDetailsView = '/productDetailsView';
   static const String kThankYouView = '/thankYouView';
+  static const String kProfileView = '/profileView';
+  static const String kAboutView = '/aboutView';
 
   static final CartCubit _cartCubit = CartCubit(
     CartProductImplementation(ApiService()),
@@ -82,6 +86,11 @@ abstract class AppRoutes {
         path: kThankYouView,
         builder: (context, state) => const ThankYouView(),
       ),
+      GoRoute(
+        path: kProfileView,
+        builder: (context, state) => const ProfilePage(),
+      ),
+      GoRoute(path: kAboutView, builder: (context, state) => const AboutView()),
     ],
   );
 }

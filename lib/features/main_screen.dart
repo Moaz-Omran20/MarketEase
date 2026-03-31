@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market_ease/features/cart/presentation/view_model/cart_cubit.dart';
 import 'package:market_ease/features/wishlist/presentation/view/wishlist_view.dart';
 import 'package:market_ease/features/wishlist/presentation/view_model/wishlist_cubit.dart';
 
 import '../core/data_source/remote/api_service.dart';
+import '../core/routes/app_routes.dart';
 import '../generated/assets.dart';
 import 'brands/data/repo/brands_implementation.dart';
 import 'brands/presentation/view/brands_view.dart';
@@ -34,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
       child: const BrandsView(),
     ),
     const WishlistView(), // Uses shared WishlistCubit from AppRoutes
-    const CartView(),     // Uses shared CartCubit from AppRoutes
+    const CartView(), // Uses shared CartCubit from AppRoutes
   ];
 
   int currentIndex = 0;
@@ -64,7 +66,7 @@ class _MainScreenState extends State<MainScreen> {
           setState(() {
             currentIndex = value;
           });
-          
+
           if (currentIndex == 3) {
             context.read<CartCubit>().getCart();
           }
@@ -74,6 +76,14 @@ class _MainScreenState extends State<MainScreen> {
         },
       ),
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.push(AppRoutes.kProfileView);
+            },
+            icon: Icon(Icons.person),
+          ),
+        ],
         leading: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: SvgPicture.asset(Assets.imagesMarketEaseLogo),
@@ -83,10 +93,7 @@ class _MainScreenState extends State<MainScreen> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      body: IndexedStack(
-        index: currentIndex,
-        children: screens,
-      ),
+      body: IndexedStack(index: currentIndex, children: screens),
     );
   }
 }
