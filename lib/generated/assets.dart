@@ -2,12 +2,15 @@
 class Assets {
   Assets._();
 
+  static const String imagesArchitectImage = 'assets/images/architect_image.jpeg';
   static const String imagesBanner1 = 'assets/images/Banner1.png';
   static const String imagesBanner2 = 'assets/images/banner2.png';
   static const String imagesBanner3 = 'assets/images/banner3.png';
   static const String imagesBanner4 = 'assets/images/banner4.png';
   static const String imagesCreditCard = 'assets/images/credit_card.svg';
+  static const String imagesGithubSvgrepoCom = 'assets/images/github-svgrepo-com.svg';
   static const String imagesGoogle = 'assets/images/google.svg';
+  static const String imagesLinkedin = 'assets/images/linkedin.svg';
   static const String imagesMarketEaseLogo = 'assets/images/market_ease_logo.svg';
   static const String imagesMarketEaseLogo11 = 'assets/images/MarketEase_logo11.png';
   static const String imagesOnboarding1 = 'assets/images/onboarding1.png';

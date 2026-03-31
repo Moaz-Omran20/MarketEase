@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market_ease/features/about/view/widgets/journey_widget.dart';
 import 'package:market_ease/features/about/view/widgets/mission_card_widget.dart';
+import 'package:market_ease/features/about/view/widgets/profile_card.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({super.key});
@@ -54,9 +56,15 @@ class AboutView extends StatelessWidget {
               description:
                   'An obsessive dedication to making every interaction intuitive and rewarding.',
             ),
+            SizedBox(height: 50.h),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ProfileCard(),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
