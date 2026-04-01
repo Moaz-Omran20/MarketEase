@@ -1,12 +1,29 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:market_ease/core/services/cache_helper.dart';
+import 'package:market_ease/features/profile/presentaition/view/widgets/profile_menu_item.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/utils/app_constants.dart';
+import '../../../../generated/assets.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String? userImagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    userImagePath = CacheHelper().getDataString(key: 'user_image');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,35 +42,50 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                // Avatar
-                Container(
-                  width: 54,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF6C63FF), Color(0xFFFF6584)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF6C63FF).withValues(alpha: 0.4),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'SB',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey[200],
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: userImagePath == null
+                            ? SvgPicture.asset(Assets.imagesProfileAvatar)
+                            : Image.file(
+                                File(userImagePath!),
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
                       ),
                     ),
-                  ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          showImageSourceDialog(context, (XFile file) {
+                            _saveImage(file);
+                            setState(() {
+                              userImagePath = file.path;
+                            });
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
+                            color: Colors.blue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(width: 16),
                 // Name & email
@@ -61,7 +93,8 @@ class ProfilePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      CacheHelper().getData(key: AppConstants.userName),
+                      CacheHelper().getData(key: AppConstants.userName) ??
+                          "User Name",
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 17,
@@ -70,7 +103,8 @@ class ProfilePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      CacheHelper().getData(key: AppConstants.userEmail),
+                      CacheHelper().getData(key: AppConstants.userEmail) ??
+                          "email@example.com",
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.45),
                         fontSize: 13,
@@ -90,20 +124,20 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  _ProfileMenuItem(
+                  ProfileMenuItem(
                     onTap: () {},
                     icon: Icons.person,
                     label: 'Personal info',
                   ),
                   const SizedBox(height: 16),
 
-                  _ProfileMenuItem(
+                  ProfileMenuItem(
                     icon: Icons.location_on_outlined,
                     label: 'Shipping Address',
                   ),
                   const SizedBox(height: 16),
 
-                  _ProfileMenuItem(
+                  ProfileMenuItem(
                     onTap: () {
                       context.push(AppRoutes.kAboutView);
                     },
@@ -112,7 +146,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  _ProfileMenuItem(
+                  ProfileMenuItem(
                     onTap: () {
                       context.go(AppRoutes.kLoginVIew);
                     },
@@ -130,55 +164,68 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class _ProfileMenuItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback? onTap;
-  final bool? isLogout;
+void _saveImage(XFile file) async {
+  final appDir = await getApplicationDocumentsDirectory();
+  final newFile = await File(file.path).copy('${appDir.path}/${file.name}');
+  CacheHelper().saveData(key: 'user_image', value: newFile.path);
+}
 
-  const _ProfileMenuItem({
-    required this.icon,
-    required this.label,
-    this.onTap,
-    this.isLogout,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
+void showImageSourceDialog(BuildContext context, Function(XFile) selectedFile) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return SimpleDialog(
+        title: Text(
+          'Choose Image Source',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         children: [
-          // Icon circle
-          isLogout == true
-              ? Icon(Icons.logout, color: Colors.red)
-              : Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6C63FF).withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(icon, color: const Color(0xFF6C63FF), size: 20),
+          SimpleDialogOption(
+            onPressed: () async {
+              Navigator.pop(context);
+              XFile? image = await ImagePicker().pickImage(
+                source: ImageSource.camera,
+              );
+              if (image != null) {
+                selectedFile(image);
+              }
+            },
+            padding: EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Icon(Icons.camera_alt, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  'Camera',
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Text(
-              label,
-              style: isLogout == true
-                  ? Theme.of(
-                      context,
-                    ).textTheme.labelMedium!.copyWith(color: Colors.red)
-                  : Theme.of(context).textTheme.labelMedium,
+              ],
             ),
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: isLogout == true ? Colors.red : Colors.white,
-            size: 16,
+          SimpleDialogOption(
+            onPressed: () async {
+              Navigator.pop(context);
+              XFile? image = await ImagePicker().pickImage(
+                source: ImageSource.gallery,
+              );
+              if (image != null) {
+                selectedFile(image);
+              }
+            },
+            padding: EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Icon(Icons.photo_library, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  'Gallery',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ],
+            ),
           ),
         ],
-      ),
-    );
-  }
+      );
+    },
+  );
 }

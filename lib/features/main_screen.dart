@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +10,7 @@ import 'package:market_ease/features/wishlist/presentation/view_model/wishlist_c
 
 import '../core/data_source/remote/api_service.dart';
 import '../core/routes/app_routes.dart';
+import '../core/services/cache_helper.dart';
 import '../generated/assets.dart';
 import 'brands/data/repo/brands_implementation.dart';
 import 'brands/presentation/view/brands_view.dart';
@@ -40,6 +43,13 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   int currentIndex = 0;
+  String? userImagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    userImagePath = CacheHelper().getDataString(key: 'user_image');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,11 +87,24 @@ class _MainScreenState extends State<MainScreen> {
       ),
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () {
-              context.push(AppRoutes.kProfileView);
-            },
-            icon: Icon(Icons.person),
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: userImagePath == null
+                ? IconButton(
+                    onPressed: () {
+                      context.push(AppRoutes.kProfileView);
+                    },
+                    icon: const Icon(Icons.person),
+                  )
+                : InkWell(
+                    onTap: () {
+                      context.push(AppRoutes.kProfileView);
+                    },
+                    child: CircleAvatar(
+                      radius: 18,
+                      backgroundImage: FileImage(File(userImagePath!)),
+                    ),
+                  ),
           ),
         ],
         leading: Padding(

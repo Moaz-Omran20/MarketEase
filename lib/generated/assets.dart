@@ -18,6 +18,7 @@ class Assets {
   static const String imagesOnboarding3 = 'assets/images/onboarding3.png';
   static const String imagesPaymentSuccessful = 'assets/images/payment_successful.svg';
   static const String imagesPaypal = 'assets/images/paypal.svg';
+  static const String imagesProfileAvatar = 'assets/images/profile_avatar.svg';
   static const String imagesScreensLoading = 'assets/images/screensLoading.json';
   static const String imagesSplashScreenBackground = 'assets/images/splash_screen_background.png';
   static const String imagesWomenFashion = 'assets/images/women_fashion.jpg';

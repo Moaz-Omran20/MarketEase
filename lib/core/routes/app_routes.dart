@@ -88,7 +88,7 @@ abstract class AppRoutes {
       ),
       GoRoute(
         path: kProfileView,
-        builder: (context, state) => const ProfilePage(),
+        builder: (context, state) =>  ProfilePage(),
       ),
       GoRoute(path: kAboutView, builder: (context, state) => const AboutView()),
     ],
