@@ -4,6 +4,7 @@ import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market_ease/core/routes/app_routes.dart';
 import 'package:market_ease/core/shared_widgets/product_loading.dart';
+import 'package:market_ease/features/cart/presentation/view_model/cart_cubit.dart';
 import 'package:market_ease/features/checkout/presentation/view/widgets/custom_payment_button.dart';
 import 'package:market_ease/features/checkout/presentation/view/widgets/payment_methods_list_view.dart';
 
@@ -56,12 +57,13 @@ class _PaymentMethodsBottomSheetState extends State<PaymentMethodsBottomSheet> {
           BlocConsumer<PaymentCubit, PaymentState>(
             listener: (context, state) {
               if (state is PaymentSuccess) {
+                context.read<CartCubit>().clearCart();
                 context.pushReplacement(AppRoutes.kThankYouView);
               }
               if (state is PaymentFailure) {
                 ScaffoldMessenger.of(
                   context,
-                ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                ).showSnackBar(SnackBar(content: Text("Payment has been failed")));
               }
             },
             builder: (context, state) {
@@ -85,13 +87,13 @@ class _PaymentMethodsBottomSheetState extends State<PaymentMethodsBottomSheet> {
                                 sandboxMode: true,
                                 clientId: ApiKeys.paypalClientId,
                                 secretKey: ApiKeys.paypalSecretKey,
-                                transactions: const [
+                                transactions: [
                                   {
                                     "amount": {
-                                      "total": '70',
+                                      "total": widget.price.toString(),
                                       "currency": "USD",
                                       "details": {
-                                        "subtotal": '70',
+                                        "subtotal": widget.price.toString(),
                                         "shipping": '0',
                                         "shipping_discount": 0,
                                       },
@@ -101,15 +103,9 @@ class _PaymentMethodsBottomSheetState extends State<PaymentMethodsBottomSheet> {
                                     "item_list": {
                                       "items": [
                                         {
-                                          "name": "Apple",
-                                          "quantity": 4,
-                                          "price": '5',
-                                          "currency": "USD",
-                                        },
-                                        {
-                                          "name": "Pineapple",
-                                          "quantity": 5,
-                                          "price": '10',
+                                          "name": "Cart Total",
+                                          "quantity": 1,
+                                          "price": widget.price.toString(),
                                           "currency": "USD",
                                         },
                                       ],
@@ -119,6 +115,8 @@ class _PaymentMethodsBottomSheetState extends State<PaymentMethodsBottomSheet> {
                                 note:
                                     "Contact us for any questions on your order.",
                                 onSuccess: (Map params) async {
+                                  context.read<CartCubit>().clearCart();
+                                  context.pushReplacement(AppRoutes.kThankYouView);
                                 },
                                 onError: (error) {
                                   Navigator.pop(context);

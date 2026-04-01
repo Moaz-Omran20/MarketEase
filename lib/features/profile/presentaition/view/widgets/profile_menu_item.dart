@@ -6,7 +6,7 @@ class ProfileMenuItem extends StatelessWidget {
   final VoidCallback? onTap;
   final bool? isLogout;
 
-  const ProfileMenuItem({
+  const ProfileMenuItem({super.key,
     required this.icon,
     required this.label,
     this.onTap,

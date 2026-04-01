@@ -22,7 +22,7 @@ class ActionButton extends StatelessWidget {
           shape: BoxShape.circle,
           color: const Color(0xFF1E1A3A),
           border: Border.all(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:market_ease/features/cart/presentation/view_model/cart_cubit.dart';
 
 import '../../../../checkout/data/repo/checkout_repo_implementation.dart';
 import '../../../../checkout/presentation/view/payment_methods_bottom_sheet.dart';
@@ -37,13 +38,22 @@ class CartPriceAndCheckoutSection extends StatelessWidget {
           height: 42.h,
           child: ElevatedButton(
             onPressed: () {
+              final cartCubit = context.read<CartCubit>();
+              
               showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return BlocProvider(
-                    create: (context) =>
-                        PaymentCubit(CheckoutRepoImplementation()),
-                    child: PaymentMethodsBottomSheet(price: totalPrice,),
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) =>
+                            PaymentCubit(CheckoutRepoImplementation()),
+                      ),
+                      BlocProvider.value(value: cartCubit),
+                    ],
+                    child: PaymentMethodsBottomSheet(
+                      price: totalPrice,
+                    ),
                   );
                 },
               );

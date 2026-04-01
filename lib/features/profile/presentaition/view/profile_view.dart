@@ -12,6 +12,8 @@ import '../../../../core/utils/app_constants.dart';
 import '../../../../generated/assets.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
