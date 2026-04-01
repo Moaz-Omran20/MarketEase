@@ -95,4 +95,20 @@ class CartCubit extends Cubit<CartState> {
       }
     }
   }
+
+  Future<void> clearCart() async {
+    emit(ClearCartLoading());
+    try {
+      final message = await cartProductRepo.clearCart();
+      currentCart = CartResponseModel(products: [], totalPrice: 0);
+      emit(CartSuccess(currentCart!));
+      emit(ClearCartSuccess(message));
+    } catch (e) {
+      if (e is DioException) {
+        emit(ClearCartFailure(ServerFailure.fromDioException(e).errorMessage));
+      } else {
+        emit(ClearCartFailure(e.toString()));
+      }
+    }
+  }
 }

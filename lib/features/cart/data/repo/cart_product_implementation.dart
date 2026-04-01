@@ -52,4 +52,14 @@ class CartProductImplementation extends CartProductRepo {
     );
     return CartResponseModel.fromJson(response.data);
   }
+
+  @override
+  Future<String> clearCart() async{
+    final token = await SecureStorage.get(key: AppConstants.tokenKey);
+    final response = await apiService.delete(
+      endPoint: ApiEndPoints.cart,
+      token: token,
+    );
+    return response.data["message"];
+  }
 }

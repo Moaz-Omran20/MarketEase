@@ -59,3 +59,15 @@ class UpdateCartQuantityFailure extends CartState {
   final String errorMessage;
   UpdateCartQuantityFailure(this.errorMessage);
 }
+
+class ClearCartLoading extends CartState {}
+
+class ClearCartSuccess extends CartState {
+  final String message;
+  ClearCartSuccess(this.message);
+}
+
+class ClearCartFailure extends CartState {
+  final String errorMessage;
+  ClearCartFailure(this.errorMessage);
+}
