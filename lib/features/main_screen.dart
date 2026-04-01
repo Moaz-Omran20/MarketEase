@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -38,12 +39,13 @@ class _MainScreenState extends State<MainScreen> {
       create: (context) => BrandsCubit(BrandsImplementation(ApiService())),
       child: const BrandsView(),
     ),
-    const WishlistView(),
-    const CartView(),
+    const WishlistView(), // Uses shared WishlistCubit from AppRoutes
+    const CartView(), // Uses shared CartCubit from AppRoutes
   ];
 
   int currentIndex = 0;
   String? userImagePath;
+  DateTime? _lastPressed;
 
   @override
   void initState() {
@@ -53,70 +55,94 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        enableFeedback: false,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category_outlined),
-            label: "Brands",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outlined),
-            label: "Wishlist",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: "Cart",
-          ),
-        ],
-        onTap: (value) {
-          setState(() {
-            currentIndex = value;
-          });
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic result) {
+        if (didPop) return;
 
-          if (currentIndex == 3) {
-            context.read<CartCubit>().getCart();
-          }
-          if (currentIndex == 2) {
-            context.read<WishlistCubit>().getWishlist();
-          }
-        },
-      ),
-      appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: userImagePath == null
-                ? IconButton(
-                    onPressed: () {
-                      context.push(AppRoutes.kProfileView);
-                    },
-                    icon: const Icon(Icons.person),
-                  )
-                : InkWell(
-                    onTap: () {
-                      context.push(AppRoutes.kProfileView);
-                    },
-                    child: CircleAvatar(
-                      radius: 18,
-                      backgroundImage: FileImage(File(userImagePath!)),
+        final now = DateTime.now();
+        final backButtonHasNotBeenPressedRecently = _lastPressed == null ||
+            now.difference(_lastPressed!) > const Duration(seconds: 2);
+
+        if (backButtonHasNotBeenPressedRecently) {
+          _lastPressed = now;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Swipe again to exit'),
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        } else {
+          // Exit the app on the second press within 2 seconds
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex,
+          enableFeedback: false,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.category_outlined),
+              label: "Brands",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outlined),
+              label: "Wishlist",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: "Cart",
+            ),
+          ],
+          onTap: (value) {
+            setState(() {
+              currentIndex = value;
+            });
+
+            if (currentIndex == 3) {
+              context.read<CartCubit>().getCart();
+            }
+            if (currentIndex == 2) {
+              context.read<WishlistCubit>().getWishlist();
+            }
+          },
+        ),
+        appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: userImagePath == null
+                  ? IconButton(
+                      onPressed: () {
+                        context.push(AppRoutes.kProfileView);
+                      },
+                      icon: const Icon(Icons.person),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        context.push(AppRoutes.kProfileView);
+                      },
+                      child: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: FileImage(File(userImagePath!)),
+                      ),
                     ),
-                  ),
+            ),
+          ],
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: SvgPicture.asset(Assets.imagesMarketEaseLogo),
           ),
-        ],
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: SvgPicture.asset(Assets.imagesMarketEaseLogo),
+          title: Text(
+            "MarketEase",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ),
-        title: Text(
-          "MarketEase",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        body: IndexedStack(index: currentIndex, children: screens),
       ),
-      body: IndexedStack(index: currentIndex, children: screens),
     );
   }
 }
