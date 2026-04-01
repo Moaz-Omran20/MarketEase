@@ -11,6 +11,7 @@ class Assets {
   static const String imagesGithubSvgrepoCom = 'assets/images/github-svgrepo-com.svg';
   static const String imagesGoogle = 'assets/images/google.svg';
   static const String imagesLinkedin = 'assets/images/linkedin.svg';
+  static const String imagesLogoo = 'assets/images/logoo.png';
   static const String imagesMarketEaseLogo = 'assets/images/market_ease_logo.svg';
   static const String imagesMarketEaseLogo11 = 'assets/images/MarketEase_logo11.png';
   static const String imagesOnboarding1 = 'assets/images/onboarding1.png';

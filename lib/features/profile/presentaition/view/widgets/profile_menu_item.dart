@@ -21,7 +21,15 @@ class ProfileMenuItem extends StatelessWidget {
         children: [
           // Icon circle
           isLogout == true
-              ? Icon(Icons.logout, color: Colors.red)
+              ? Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: const Color(0xFF6C63FF).withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: Colors.red, size: 20),
+          )
               : Container(
             width: 38,
             height: 38,

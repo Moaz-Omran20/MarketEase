@@ -127,19 +127,6 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   ProfileMenuItem(
-                    onTap: () {},
-                    icon: Icons.person,
-                    label: 'Personal info',
-                  ),
-                  const SizedBox(height: 16),
-
-                  ProfileMenuItem(
-                    icon: Icons.location_on_outlined,
-                    label: 'Shipping Address',
-                  ),
-                  const SizedBox(height: 16),
-
-                  ProfileMenuItem(
                     onTap: () {
                       context.push(AppRoutes.kAboutView);
                     },
