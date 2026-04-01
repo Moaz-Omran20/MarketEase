@@ -39,8 +39,8 @@ class _MainScreenState extends State<MainScreen> {
       create: (context) => BrandsCubit(BrandsImplementation(ApiService())),
       child: const BrandsView(),
     ),
-    const WishlistView(), // Uses shared WishlistCubit from AppRoutes
-    const CartView(), // Uses shared CartCubit from AppRoutes
+    const WishlistView(),
+    const CartView(),
   ];
 
   int currentIndex = 0;
@@ -68,6 +68,7 @@ class _MainScreenState extends State<MainScreen> {
           _lastPressed = now;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
+              backgroundColor: Colors.red,
               content: Text('Swipe again to exit'),
               duration: Duration(seconds: 2),
               behavior: SnackBarBehavior.floating,

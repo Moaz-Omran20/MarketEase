@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market_ease/core/data_source/remote/api_service.dart';
 import 'package:market_ease/core/shared_widgets/custom_text_form_field.dart';
 import 'package:market_ease/core/theme/light_colors.dart';
@@ -7,6 +9,7 @@ import 'package:market_ease/features/auth/shared_widgets/custom_auth_button.dart
 import 'package:market_ease/features/auth/signup/view/widgets/already_have_account.dart';
 import 'package:market_ease/features/auth/signup/view_model/signup_cubit.dart';
 
+import '../../../../core/shared_widgets/product_loading.dart';
 import '../../../../core/shared_widgets/snack_bar.dart';
 
 class SignupView extends StatefulWidget {
@@ -62,6 +65,7 @@ class _SignupViewState extends State<SignupView> {
                     confirmPasswordController.clear();
                     phoneController.clear();
                     autoValidateMode = AutovalidateMode.disabled;
+                    context.pop();
                   } else if (state is SignupError) {
                     SnackBarCustom.showFailureSnackBar(
                       context,
@@ -186,7 +190,12 @@ class _SignupViewState extends State<SignupView> {
                       ),
                       const SizedBox(height: 32),
                       if (state is SignupLoading)
-                        const Center(child: CircularProgressIndicator())
+                         Center(
+                          child: SizedBox(
+                            height: 52.h,
+                            child: ProductLoading(),
+                          ),
+                        )
                       else
                         CustomAuthButton(
                           title: "Sign Up",
